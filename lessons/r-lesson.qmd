@@ -1,0 +1,64 @@
+---
+title: "Interactive R: Sampling Distributions"
+engine: markdown
+format:
+  live-html:
+    navbar: false
+    toc: false
+---
+
+## Exploring Sample Means in R
+
+Adjust the sample size $n$ below and watch how the sampling distribution of the mean narrows (Central Limit Theorem):
+
+```{ojs}
+//| echo: false
+viewof sample_n = Inputs.range([2, 100], {
+  value: 15,
+  step: 1,
+  label: "Sample size (n):"
+})
+```
+
+```{webr}
+#| input:
+#|   - sample_n
+set.seed(42)
+means <- replicate(500, mean(rexp(sample_n, rate = 1)))
+
+hist(
+  means,
+  breaks = 25,
+  col = "#4e79a7",
+  border = "white",
+  xlim = c(0, 3),
+  main = paste("Distribution of 500 Sample Means (n =", sample_n, ")"),
+  xlab = "Sample Mean"
+)
+abline(v = 1, col = "#e15759", lwd = 2, lty = 2)
+```
+
+---
+
+## Try It Yourself
+
+Edit and run the R code chunk below:
+
+```{webr}
+#| exercise: ex_summary
+values <- c(12, 18, 25, 31, 44)
+______
+```
+
+::: { .hint exercise="ex_summary" }
+Try calling `summary(values)` or `sd(values)`.
+:::
+
+::: { .solution exercise="ex_summary" }
+```{webr}
+#| exercise: ex_summary
+#| solution: true
+values <- c(12, 18, 25, 31, 44)
+summary(values)
+```
+:::

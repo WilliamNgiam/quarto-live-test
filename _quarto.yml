@@ -1,0 +1,21 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - .nojekyll
+
+website:
+  title: "Quarto Live Course Embeds"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Overview
+      - href: lessons/python-lesson.qmd
+        text: Python Embed Demo
+      - href: lessons/r-lesson.qmd
+        text: R Embed Demo
+
+format:
+  live-html:
+    theme: cosmo
+    toc: true

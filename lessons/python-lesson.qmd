@@ -1,0 +1,102 @@
+---
+title: "Interactive Python: Damped Waves"
+engine: markdown
+format:
+  live-html:
+    navbar: false
+    toc: false
+pyodide:
+  packages:
+    - numpy
+    - matplotlib
+---
+
+## 1. Reactive Controls (Marimo-Style)
+
+Drag the sliders below to adjust the wave **frequency** and **damping** in real time. Observable JS (`{ojs}`) passes the slider values directly into Python (`{pyodide}`).
+
+```{ojs}
+//| echo: false
+viewof freq = Inputs.range([0.5, 8], {
+  value: 3,
+  step: 0.5,
+  label: "Frequency (Hz):"
+})
+
+viewof damping = Inputs.range([0.0, 1.5], {
+  value: 0.3,
+  step: 0.05,
+  label: "Damping coefficient:"
+})
+```
+
+```{pyodide}
+#| edit: false
+#| echo: false
+#| input:
+#|   - freq
+#|   - damping
+import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 4 * np.pi, 400)
+envelope = np.exp(-damping * t)
+y = envelope * np.sin(freq * t)
+
+fig, ax = plt.subplots(figsize=(7, 3.2))
+ax.plot(t, y, lw=2, label=f"f = {freq} Hz, γ = {damping}")
+ax.plot(t, envelope, "--", color="gray", alpha=0.6, label="Envelope")
+ax.plot(t, -envelope, "--", color="gray", alpha=0.6)
+ax.set_ylim(-1.1, 1.1)
+ax.set_xlabel("Time (t)")
+ax.set_ylabel("Amplitude")
+ax.legend(loc="upper right")
+ax.grid(alpha=0.25)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## 2. Editable Python Sandbox
+
+Modify the code below and click **Run Code** to experiment with your own signal:
+
+```{pyodide}
+#| autorun: true
+import numpy as np
+
+samples = np.array([2.1, 4.5, 3.8, 6.0, 5.2])
+print(f"Mean: {samples.mean():.2f}, Std Dev: {samples.std():.2f}")
+```
+
+---
+
+## 3. Quick Practice Exercise
+
+Complete the code below to compute the **root-mean-square (RMS)** value of `signal`, defined as $\sqrt{\frac{1}{N}\sum x_i^2}$:
+
+```{pyodide}
+#| exercise: ex_rms
+import numpy as np
+
+signal = np.array([1.0, -1.0, 1.0, -1.0])
+rms = np.sqrt(np.mean(______))
+print("RMS:", rms)
+```
+
+::: { .hint exercise="ex_rms" }
+Square each element of `signal` using `signal ** 2` inside `np.mean(...)`.
+:::
+
+::: { .solution exercise="ex_rms" }
+```{pyodide}
+#| exercise: ex_rms
+#| solution: true
+import numpy as np
+
+signal = np.array([1.0, -1.0, 1.0, -1.0])
+rms = np.sqrt(np.mean(signal ** 2))
+print("RMS:", rms)
+```
+:::
